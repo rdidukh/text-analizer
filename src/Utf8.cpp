@@ -1,28 +1,8 @@
+#ifndef __UTF8_CPP_
+#define __UTF8_CPP_
+
 #include <Utf8.h>
 
-class Utf8
-{
-    public:
-    Utf8()
-    {
-	
-    }
-
-    Utf8(unsigned long int uli)
-    {
-
-    }
-
-    Utf8()
-
-
-}
-
-unicode_to_utf8()
-{
-    
-
-
-}
-
+#else
+#endif // __UTF8_CPP_
 

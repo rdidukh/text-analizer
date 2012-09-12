@@ -3,20 +3,24 @@ OUT=./out
 
 CXX = g++
 CXXFLAGS = -Wall
-INCLUDE = -I./include/
+INCLUDE = ./include/
 TARGET = text-analizer
 
-all: $(TARGET)
+all: $(SRC)/$(TARGET)
 
-$(TARGET): $(SRC)/main.o
+$(SRC)/$(TARGET): $(SRC)/main.o $(SRC)/Utf8.o
 	$(CXX) $^ -o $(SRC)/$(TARGET)
 	cp $(SRC)/*.o $(SRC)/$(TARGET) $(OUT)/
 
-main.o: $(SRC)/main.cpp
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $(SRC)/$< -c -o $(SRC)/$@
+$(SRC)/main.o: $(SRC)/main.cpp
+	$(CXX) $(CXXFLAGS) -I$(INCLUDE) $^ -c -o $@
 
-main.cpp:
+$(SRC)/Utf8.o: $(SRC)/Utf8.cpp
+	$(CXX) $(CXXFLAGS) -I$(INCLUDE) $^ -c -o $@
+
+$(SRC)/main.cpp:
+$(SRC)/Utf8.cpp:
 
 clean:
-	rm $(SRC)/*~ $(SRC)/*.o $(SRC)/$(TARGET) $(OUT)/*.o $(OUT)/$(TARGET)
+	rm ./*~ $(INCLUDE)/*~ $(SRC)/*~ $(SRC)/*.o $(SRC)/$(TARGET) $(OUT)/*.o $(OUT)/$(TARGET)
 
