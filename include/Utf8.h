@@ -7,7 +7,10 @@ using namespace std;
 
 class Utf8
 {
-  std::bitset<32> bs;
+
+  static const int MAX_UTF8_BIT_LEN = 32;
+
+  std::bitset<MAX_UTF8_BIT_LEN> bs;
 
  public:
   Utf8();
