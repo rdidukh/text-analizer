@@ -19,10 +19,13 @@ class Utf8Char
 
  public:
   Utf8Char();
+  Utf8Char(unsigned long int);
   void debug();
   bool empty();
   bool notutf8();
- 
+  void setUnicode(unsigned long int); 
+  unsigned long int getUnicode();
+
 };
 
 // istream& operator>> (istream& is, Utf8Char& utf8char);

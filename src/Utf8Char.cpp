@@ -9,6 +9,91 @@ Utf8Char::Utf8Char()
 	notutf8_flag = false;
 }
 
+Utf8Char::Utf8Char(unsigned long int unicode)
+{
+	setUnicode(unicode);
+}
+
+void Utf8Char::setUnicode(unsigned long int unicode)
+{
+//	printf("START setUnicode\n");
+//	printf("unicode = %lx\n", unicode);
+	std::vector<char>::iterator it;	
+	int length = 1;
+	int bytes_needed;
+	char byte;
+	unsigned long int temp = unicode;
+	
+//	printf("clear bytes\n");
+	bytes.clear();
+	
+//	printf("find MSB\n");
+	while(temp >>= 1)
+		length++;
+
+//	printf("length = %i\n", length);
+
+	if(length <= 7)
+	{
+		byte = 0x7f & unicode;
+//		printf("byte = %x\n", (unsigned char)byte);
+		bytes.push_back(byte); 
+//		printf("RETURN");
+		return;
+	}
+
+	bytes_needed = length/6 + 1;
+//	printf("bytes_needed = %i\nLOOP:\n", bytes_needed);	
+
+	for(int i=0; i<(bytes_needed-1)*6; i+=6)
+	{
+//		printf("i = %i\n", i);
+		byte = (0x3f & (unicode >> i)) | 0x80;
+//		printf("byte = %x\n", (unsigned char)byte);
+		it = bytes.begin();
+		bytes.insert(it, byte);
+	}
+//	printf("END LOOP\n");
+	byte = (0x1f & (unicode >> ((bytes_needed-1)*6))) | 0xc0;
+//	printf("byte = %x\n", (unsigned char)byte);
+	it = bytes.begin();
+	bytes.insert(it, byte);
+//	printf("RETURN");
+	return;
+
+}
+
+unsigned long int Utf8Char::getUnicode()
+{
+	unsigned long int unicode = 0x0;
+	std::vector<char>::iterator it = bytes.begin();
+	char byte = *it;
+	
+	if(bytes.size() == 0)
+	{
+		return 0;
+	}
+
+	if(bytes.size() == 1)
+	{
+		return (unsigned long int)byte;
+	}
+
+	unicode = (byte & 0x1f);
+	
+	++it;
+	while(it != bytes.end())
+	{
+		byte = *it;
+		unicode <<= 6;
+		unicode |= (byte & 0x3f);
+		++it;		
+	}
+
+	return unicode;
+
+}
+
 bool Utf8Char::notutf8()
 {
 	return notutf8_flag;
@@ -17,7 +102,11 @@ bool Utf8Char::notutf8()
 void Utf8Char::debug()
 {
 	
-unsigned char c;
+	unsigned char c;
+	
+	std::cout << std::endl;
+	std::cout << "*** DEBUG ***" << std::endl;
+	
 
 	for(std::vector<char>::iterator i = bytes.begin(); i != bytes.end(); ++i)
 	{
@@ -25,6 +114,7 @@ unsigned char c;
 		printf("%x ", c);
 	}
 	std::cout << std::endl;
+	std::cout << "--- DEBUG ---" << std::endl << std::endl;
 
 }
 
