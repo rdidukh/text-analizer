@@ -12,6 +12,10 @@ class Utf8String
 
 	public:
 	Utf8String();
+//	void push_back(Utf8Char utf8char);
+//	void clear();
+//	void empty();
+//	find()
 
 };
 

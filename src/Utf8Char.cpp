@@ -14,6 +14,21 @@ Utf8Char::Utf8Char(unsigned long int unicode)
 	setUnicode(unicode);
 }
 
+/*
+Utf8Char::Utf8Char(Utf8Char& utf8char)
+{
+
+	if(utf8char.empty()) return;
+
+	// Check if this != utf8char
+
+	this->unicode = utf8char.unicode;
+	
+	// copy vector utf8char.bytes to this->bytes
+
+}
+*/
+
 void Utf8Char::setUnicode(unsigned long int unicode)
 {
 //	printf("START setUnicode\n");
@@ -23,7 +38,8 @@ void Utf8Char::setUnicode(unsigned long int unicode)
 	int bytes_needed;
 	char byte;
 	unsigned long int temp = unicode;
-	
+	this->unicode = unicode;	
+
 //	printf("clear bytes\n");
 	bytes.clear();
 	
@@ -65,6 +81,8 @@ void Utf8Char::setUnicode(unsigned long int unicode)
 
 unsigned long int Utf8Char::getUnicode()
 {
+	return this->unicode;
+/*
 	unsigned long int unicode = 0x0;
 	std::vector<char>::iterator it = bytes.begin();
 	char byte = *it;
@@ -91,7 +109,7 @@ unsigned long int Utf8Char::getUnicode()
 	}
 
 	return unicode;
-
+*/
 }
 
 bool Utf8Char::notutf8()

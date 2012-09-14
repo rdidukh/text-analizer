@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <list>
 
 using namespace std;
 
@@ -19,6 +20,7 @@ class Utf8Char
 
  public:
   Utf8Char();
+//  Utf8Char(Utf8Char&);
   Utf8Char(unsigned long int);
   void debug();
   bool empty();
@@ -28,8 +30,7 @@ class Utf8Char
 
 };
 
-// istream& operator>> (istream& is, Utf8Char& utf8char);
-// ostream& operator<< (ostream& os, Utf8Char& utf8char);
+typedef std::list<Utf8Char> Utf8CharList;
 
 #else
 #endif // __UTF8CHAR_H_

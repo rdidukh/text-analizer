@@ -4,13 +4,15 @@
 #include <cstdio>
 
 #include <Utf8Char.h>
+#include <Utf8Charset.h>
 
 using namespace std;
 
 int main(int argc, char **argv)
 {
 
-	Utf8Char utf8char(0x410);
+	Utf8Char utf8char2(0x410);
+	Utf8Char utf8char = utf8char2;
 	utf8char.debug();
 	std::cout << utf8char << std::endl;
 	
