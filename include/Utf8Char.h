@@ -7,6 +7,8 @@
 
 using namespace std;
 
+typedef unsigned long int unicode_t;
+
 class Utf8Char
 {
 
@@ -18,6 +20,8 @@ class Utf8Char
   std::vector<char> bytes;
   unsigned long int unicode;
 
+  unicode_t toUnicode();
+
  public:
   Utf8Char();
 //  Utf8Char(Utf8Char&);
@@ -25,12 +29,13 @@ class Utf8Char
   void debug();
   bool empty();
   bool notutf8();
-  void setUnicode(unsigned long int); 
-  unsigned long int getUnicode();
+  void setUnicode(unicode_t); 
+  unicode_t getUnicode();
+  
 
 };
 
-typedef std::list<Utf8Char> Utf8CharList;
+
 
 #else
 #endif // __UTF8CHAR_H_

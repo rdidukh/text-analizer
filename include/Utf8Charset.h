@@ -3,23 +3,26 @@
 
 #include <Utf8Char.h>
 #include <iostream>
-#include <list>
+#include <vector>
 #include <cstdarg>
+#include <cstdio>
 
 using namespace std;
+
+typedef std::vector<unicode_t> UnicodeVector;
 
 class Utf8Charset
 {
 
-  std::list<Utf8CharList> charset;
+  std::vector<UnicodeVector> charset;
 
  public:
   Utf8Charset();
   
-  void push_back(Utf8Charset utf8charset);
+  //void push_back(const Utf8Charset& utf8charset);
 //  void push_back(Utf8CharList utf8charlist);
-  void push_back(int amount, Utf8Char& utf8char, ...);
-
+  void push_back(int amount, unicode_t unicode, ...);
+  void debug();
 };
 
 #else

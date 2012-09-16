@@ -9,27 +9,14 @@ Utf8Char::Utf8Char()
 	notutf8_flag = false;
 }
 
+
 Utf8Char::Utf8Char(unsigned long int unicode)
 {
 	setUnicode(unicode);
 }
 
-/*
-Utf8Char::Utf8Char(Utf8Char& utf8char)
-{
 
-	if(utf8char.empty()) return;
-
-	// Check if this != utf8char
-
-	this->unicode = utf8char.unicode;
-	
-	// copy vector utf8char.bytes to this->bytes
-
-}
-*/
-
-void Utf8Char::setUnicode(unsigned long int unicode)
+void Utf8Char::setUnicode(unicode_t unicode)
 {
 //	printf("START setUnicode\n");
 //	printf("unicode = %lx\n", unicode);
@@ -37,7 +24,8 @@ void Utf8Char::setUnicode(unsigned long int unicode)
 	int length = 1;
 	int bytes_needed;
 	char byte;
-	unsigned long int temp = unicode;
+
+	unicode_t temp = unicode;
 	this->unicode = unicode;	
 
 //	printf("clear bytes\n");
@@ -79,11 +67,15 @@ void Utf8Char::setUnicode(unsigned long int unicode)
 
 }
 
-unsigned long int Utf8Char::getUnicode()
+
+unicode_t Utf8Char::getUnicode()
 {
 	return this->unicode;
-/*
-	unsigned long int unicode = 0x0;
+}
+
+unicode_t Utf8Char::toUnicode()
+{
+	unicode_t unicode = 0x0;
 	std::vector<char>::iterator it = bytes.begin();
 	char byte = *it;
 	
@@ -94,7 +86,7 @@ unsigned long int Utf8Char::getUnicode()
 
 	if(bytes.size() == 1)
 	{
-		return (unsigned long int)byte;
+		return (unicode_t)byte;
 	}
 
 	unicode = (byte & 0x1f);
@@ -109,8 +101,8 @@ unsigned long int Utf8Char::getUnicode()
 	}
 
 	return unicode;
-*/
 }
+
 
 bool Utf8Char::notutf8()
 {
@@ -148,7 +140,7 @@ std::istream& operator>> (std::istream& is, Utf8Char& utf8char)
 	
 	utf8char.bytes.clear();
 	utf8char.notutf8_flag = false;
-	streampos save_pos = is.tellg();
+	std::streampos save_pos = is.tellg();
 
 	if(save_pos == -1) { std::cout << "Position failure!" << std::endl; return is;}
 
@@ -168,6 +160,7 @@ std::istream& operator>> (std::istream& is, Utf8Char& utf8char)
 	{
 //		std::cout << "The highest bit is 0: ASCII char." << std::endl;
 		utf8char.bytes.push_back(byte);
+		utf8char.unicode = utf8char.toUnicode();
 //		std::cout << "Pushed it to utf8char" << std::endl;
 		return is;
 	}
@@ -234,6 +227,7 @@ std::istream& operator>> (std::istream& is, Utf8Char& utf8char)
 		utf8char.bytes.push_back(byte);
 	}
 //	std::cout << "Return is" << std::endl;
+	utf8char.unicode = utf8char.toUnicode();
 	return is;
 }
 

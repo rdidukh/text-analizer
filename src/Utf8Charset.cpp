@@ -9,30 +9,47 @@ Utf8Charset::Utf8Charset()
 	
 }
   
+void Utf8Charset::debug()
+{
+	
+	std::cout << std::endl;
+	std::cout << "*** DEBUG ***" << std::endl;
+	
+
+	for(std::vector<UnicodeVector>::iterator i = charset.begin(); i != charset.end(); ++i)
+	{
+		for(UnicodeVector::iterator j = i->begin(); j != i->end(); ++j)
+		{
+			printf("%lx  ", *j);
+		}
+		printf("\n");
+	}
+	std::cout << std::endl;
+	std::cout << "--- DEBUG ---" << std::endl << std::endl;
+}
+
+
 //  void push_back(Utf8Charset utf8charset);
 //  void push_back(Utf8CharList utf8charlist);
-void Utf8Charset::push_back(int amount, Utf8Char& utf8char, ...)
+void Utf8Charset::push_back(int amount, unicode_t unicode, ...)
 {
-	Utf8Char& val;
-	Utf8CharList utf8charlist;
+	unicode_t val;
+	UnicodeVector unicodevector;
 
 	if(amount <= 0) return;
 
-	utf8charlist.push_back(utf8char);
-
-	//this->charset;
+	unicodevector.push_back(unicode);
 
 	va_list vl;
-	va_start(vl,utf8char);
-	for (i=1;i<amount;i++)
+	va_start(vl, unicode);
+	for (int i=1; i<amount; i++)
   	{
-    		val = va_arg(vl, Utf8Char&);
-		utf8charlist.push_back(val);
-    		//printf ("\t%.2f",val);
+    		val = va_arg(vl, unicode_t);
+		unicodevector.push_back(val);
   	}
   	va_end(vl);
 
-	this->charset.push_back(utf8charlist);
+	this->charset.push_back(unicodevector);
 
 }
 
