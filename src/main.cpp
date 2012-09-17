@@ -3,6 +3,8 @@
 #include <cstdlib>
 #include <cstdio>
 
+#include <map>
+
 #include <Utf8Char.h>
 #include <Utf8Charset.h>
 
@@ -41,6 +43,46 @@ int main(int argc, char **argv)
 
 //	std::cout << "<>" << std::endl;*/
 
+
+	std::map<unicode_t, int> unicodemap;
+
+	Utf8Char utf8char;
+
+	std::ifstream infile;
+	
+	infile.open(argv[1], std::ifstream::in | std::ifstream::binary);
+
+	while(!infile.eof())
+	{
+		infile >> utf8char;
+		//std::cout << utf8char << std::endl;		
+		if (utf8char.notutf8() || utf8char.empty())
+		{
+			std::cout << "NOT UTF ENCODING. STOP." << std::endl;
+//			infile.close();
+//			exit(EXIT_FAILURE);
+			break;
+		}
+
+		if(unicodemap.count(utf8char.getUnicode()) > 0)
+		{
+			unicodemap[utf8char.getUnicode()] += 1;
+		}
+		else
+		{
+			unicodemap[utf8char.getUnicode()] = 1;
+		}
+						
+	}
+
+	infile.close();
+
+
+	for(std::map<unicode_t, int>::iterator i = unicodemap.begin(); i != unicodemap.end(); ++i)
+	{
+		utf8char.setUnicode(i->first);
+		std::cout << utf8char << ": " << i->second << std::endl;
+	}
 
 	return EXIT_SUCCESS;	
 }

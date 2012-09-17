@@ -207,6 +207,7 @@ std::istream& operator>> (std::istream& is, Utf8Char& utf8char)
 		if(is.eof()) 
 		{	
 			std::cout << "EOF!" << std::endl;
+			utf8char.notutf8_flag = true;
 			utf8char.bytes.clear();
 			is.clear();
 			is.seekg(save_pos, ios::beg);

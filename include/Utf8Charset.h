@@ -22,6 +22,7 @@ class Utf8Charset
   //void push_back(const Utf8Charset& utf8charset);
 //  void push_back(Utf8CharList utf8charlist);
   void push_back(int amount, unicode_t unicode, ...);
+  int find(unicode_t unicode);
   void debug();
 };
 

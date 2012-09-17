@@ -29,6 +29,18 @@ void Utf8Charset::debug()
 }
 
 
+int Utf8Charset::find(unicode_t unicode)
+{
+	// std::vector<UnicodeVector> charset;
+	
+	for(unsigned int i = 0; i < this->charset.size(); i++)
+		for(UnicodeVector::iterator j = charset.at(i).begin(); j != charset.at(i).begin(); ++j)		
+			if(*j == unicode) return i;
+		
+	return -1;
+
+}
+
 //  void push_back(Utf8Charset utf8charset);
 //  void push_back(Utf8CharList utf8charlist);
 void Utf8Charset::push_back(int amount, unicode_t unicode, ...)
