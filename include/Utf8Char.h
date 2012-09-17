@@ -31,7 +31,7 @@ class Utf8Char
   bool notutf8();
   void setUnicode(unicode_t); 
   unicode_t getUnicode();
-  
+  std::string tostring(); 
 
 };
 

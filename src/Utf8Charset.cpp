@@ -9,6 +9,7 @@ Utf8Charset::Utf8Charset()
 	
 }
   
+
 void Utf8Charset::debug()
 {
 	
@@ -16,9 +17,9 @@ void Utf8Charset::debug()
 	std::cout << "*** DEBUG ***" << std::endl;
 	
 
-	for(std::vector<UnicodeVector>::iterator i = charset.begin(); i != charset.end(); ++i)
+	for(std::vector<UnicodeGroup>::iterator i = charset.begin(); i != charset.end(); ++i)
 	{
-		for(UnicodeVector::iterator j = i->begin(); j != i->end(); ++j)
+		for(vector<unicode_t>::iterator j = i->array.begin(); j != i->array.end(); ++j)
 		{
 			printf("%lx  ", *j);
 		}
@@ -29,6 +30,30 @@ void Utf8Charset::debug()
 }
 
 
+unicode_t Utf8Charset::findgroup(unicode_t unicode)
+{
+	
+	for(std::vector<UnicodeGroup>::iterator i = charset.begin(); i != charset.end(); ++i)
+		for(vector<unicode_t>::iterator j = i->array.begin(); j != i->array.end(); ++j)
+			if ((*j) == unicode) return i->group_code;			
+	
+	return -1;
+}
+
+std::string Utf8Charset::tostring(unicode_t unicode)
+{
+	for(std::vector<UnicodeGroup>::iterator i = charset.begin(); i != charset.end(); ++i)
+		for(vector<unicode_t>::iterator j = i->array.begin(); j != i->array.end(); ++j)
+			if ((*j) == unicode)
+			{
+				return i->output_string;
+			}
+	
+	return string("");
+
+}
+
+/*
 int Utf8Charset::find(unicode_t unicode)
 {
 	// std::vector<UnicodeVector> charset;
@@ -40,32 +65,78 @@ int Utf8Charset::find(unicode_t unicode)
 	return -1;
 
 }
+*/
 
-//  void push_back(Utf8Charset utf8charset);
-//  void push_back(Utf8CharList utf8charlist);
-void Utf8Charset::push_back(int amount, unicode_t unicode, ...)
+
+void Utf8Charset::push_back(unicode_t group_code, std::string output_string, unsigned int flags, int amount, unicode_t unicode, ...)
 {
 	unicode_t val;
-	UnicodeVector unicodevector;
+	UnicodeGroup unicodegroup;
 
 	if(amount <= 0) return;
 
-	unicodevector.push_back(unicode);
+	unicodegroup.array.push_back(unicode);
 
 	va_list vl;
 	va_start(vl, unicode);
-	for (int i=1; i<amount; i++)
+	for (int i = 1; i < amount; i++)
   	{
     		val = va_arg(vl, unicode_t);
-		unicodevector.push_back(val);
+		unicodegroup.array.push_back(val);
   	}
   	va_end(vl);
 
-	this->charset.push_back(unicodevector);
+	if (group_code != 0)
+		unicodegroup.group_code = group_code;
+	else
+		unicodegroup.group_code = unicode;
+	
+	if (!output_string.empty())
+		unicodegroup.output_string = output_string;
+	else
+	{
+		Utf8Char utf8char(unicode);
+		unicodegroup.output_string = utf8char.tostring();
+	}
+	
+	unicodegroup.flags = flags;
+
+	this->charset.push_back(unicodegroup);
 
 }
 
+void Utf8Charset::push_back(int amount, unicode_t unicode, ...)
+{
+	unicode_t val;
+	UnicodeGroup unicodegroup;
 
+	if(amount <= 0) return;
+
+	unicodegroup.array.push_back(unicode);
+
+	va_list vl;
+	va_start(vl, unicode);
+	for (int i = 1; i < amount; i++)
+  	{
+    		val = va_arg(vl, unicode_t);
+		unicodegroup.array.push_back(val);
+  	}
+  	va_end(vl);
+
+	unicodegroup.group_code = unicode;
+	
+	Utf8Char utf8char(unicode);
+	unicodegroup.output_string = utf8char.tostring();
+	unicodegroup.flags = 0x0;
+
+	this->charset.push_back(unicodegroup);
+
+}
+
+void Utf8Charset::push_back(unicode_t unicode)
+{
+	this->push_back(1, unicode);
+}
 
 #else
 #endif // __UTF8CHARSET_CPP_

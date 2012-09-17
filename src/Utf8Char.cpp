@@ -133,6 +133,16 @@ bool Utf8Char::empty()
 	return bytes.empty();
 }
 
+std::string Utf8Char::tostring()
+{
+	std::string result;
+	
+	for(std::vector<char>::iterator i = this->bytes.begin(); i != this->bytes.end(); ++i)
+		result.push_back(*i);
+	
+	return result;
+}
+
 std::istream& operator>> (std::istream& is, Utf8Char& utf8char)
 {
 	char byte;
@@ -151,7 +161,7 @@ std::istream& operator>> (std::istream& is, Utf8Char& utf8char)
 //	std::cout << "is.eof() == false" << std::endl;
 
 	is.get(byte); 
-	if(is.eof()) { std::cout << "EOF!!!" << std::endl; return is;}	
+	if(is.eof()) { /*std::cout << "EOF!!!" << std::endl;*/ return is;}	
 
 //	printf("Got first byte = %x\n", (unsigned char)byte);
 	//std::cout << "got first byte = " << std::hex << byte << std::endl;
@@ -167,7 +177,7 @@ std::istream& operator>> (std::istream& is, Utf8Char& utf8char)
 
 	if(!(byte & 0x40))
 	{
-		std::cout << "NOT UTF!" << std::endl;
+	//	std::cout << "NOT UTF!" << std::endl;
 		utf8char.notutf8_flag = true;
 		// error: not a utf8 encoding!
 		is.clear();
@@ -206,7 +216,7 @@ std::istream& operator>> (std::istream& is, Utf8Char& utf8char)
 //		printf("Read byte = %x\n", (unsigned char)byte);
 		if(is.eof()) 
 		{	
-			std::cout << "EOF!" << std::endl;
+	//		std::cout << "EOF!" << std::endl;
 			utf8char.notutf8_flag = true;
 			utf8char.bytes.clear();
 			is.clear();
@@ -217,7 +227,7 @@ std::istream& operator>> (std::istream& is, Utf8Char& utf8char)
 		if((byte & 0xc0) != 0x80)
 		{
 			// error: not a utf8 encoding!
-			std::cout << "NOT UTF!" << std::endl;
+		//	std::cout << "NOT UTF!" << std::endl;
 			utf8char.notutf8_flag = true;
 			utf8char.bytes.clear();
 			is.clear();
@@ -239,6 +249,8 @@ std::ostream& operator<< (ostream& os, Utf8Char& utf8char)
 	//std::cout << std::endl;
 	return os;
 }
+
+
 
 #else
 #endif // __UTF8Char_CPP_
