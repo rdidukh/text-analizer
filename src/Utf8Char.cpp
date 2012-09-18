@@ -152,6 +152,8 @@ std::istream& operator>> (std::istream& is, Utf8Char& utf8char)
 	utf8char.notutf8_flag = false;
 	std::streampos save_pos = is.tellg();
 
+//	std::cout << "pos = " << save_pos << std::endl;
+
 	if(save_pos == -1) { std::cout << "Position failure!" << std::endl; return is;}
 
 //	std::cout << "save_pos = " << save_pos << std::endl;
@@ -238,6 +240,7 @@ std::istream& operator>> (std::istream& is, Utf8Char& utf8char)
 		utf8char.bytes.push_back(byte);
 	}
 //	std::cout << "Return is" << std::endl;
+//	std::cout << "...ok pos = " << is.tellg() << std::endl;
 	utf8char.unicode = utf8char.toUnicode();
 	return is;
 }

@@ -128,6 +128,7 @@ void Utf8Charset::push_back(int amount, unicode_t unicode, ...)
 	Utf8Char utf8char(unicode);
 	unicodegroup.output_string = utf8char.tostring();
 	unicodegroup.flags = 0x0;
+	unicodegroup.index = this->charset.size();
 
 	this->charset.push_back(unicodegroup);
 

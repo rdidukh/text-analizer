@@ -1,2 +1,1 @@
-- Add grouping of symbols, with showing one of them;
 - Implement sorting of output by unicode, alphabet, count.

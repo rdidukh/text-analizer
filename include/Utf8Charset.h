@@ -14,6 +14,7 @@ using namespace std;
 typedef struct _UnicodeGroup
 {
 	std::vector<unicode_t> array;
+	int index;
 	unicode_t group_code;
 	std::string output_string;
 	unsigned int flags;
@@ -35,9 +36,9 @@ class Utf8Charset
 //  int find(unicode_t unicode);
   unicode_t findgroup(unicode_t unicode);
   std::string tostring(unicode_t unicode);
-
-
- void debug();
+  	
+	
+  void debug();
 };
 
 #else
